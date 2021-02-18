@@ -273,7 +273,7 @@ export default {
 }
 
 .v-step .v-step__arrow {
-  border-color: #50596c; /* #ffc107, #35495e */
+  border-color: #fff; /* #ffc107, #35495e */
 
   &--dark {
     border-color: #454d5d;
