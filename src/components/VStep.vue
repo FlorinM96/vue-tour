@@ -1,54 +1,55 @@
 <template>
   <div class="v-step" :id="'v-step-' + hash" :ref="'v-step-' + hash">
-    <slot name="header">
-      <div v-if="step.header" class="v-step__header">
-        <div v-if="step.header.title" v-html="step.header.title"></div>
-      </div>
-    </slot>
-
-    <slot name="content">
-      <div class="v-step__content">
-        <div v-if="step.content" v-html="step.content"></div>
-        <div v-else>
-          This is a demo step! The id of this step is {{ hash }} and it targets
-          {{ step.target }}.
+    <slot>
+      <slot name="header">
+        <div v-if="step.header" class="v-step__header">
+          <div v-if="step.header.title" v-html="step.header.title"></div>
         </div>
-      </div>
-    </slot>
+      </slot>
 
-    <slot name="actions">
-      <div class="v-step__buttons">
-        <button
-          @click.prevent="skip"
-          v-if="!isLast && isButtonEnabled('buttonSkip')"
-          class="v-step__button v-step__button-skip"
-        >
-          {{ labels.buttonSkip }}
-        </button>
-        <button
-          @click.prevent="previousStep"
-          v-if="!isFirst && isButtonEnabled('buttonPrevious')"
-          class="v-step__button v-step__button-previous"
-        >
-          {{ labels.buttonPrevious }}
-        </button>
-        <button
-          @click.prevent="nextStep"
-          v-if="!isLast && isButtonEnabled('buttonNext')"
-          class="v-step__button v-step__button-next"
-        >
-          {{ labels.buttonNext }}
-        </button>
-        <button
-          @click.prevent="finish"
-          v-if="isLast && isButtonEnabled('buttonStop')"
-          class="v-step__button v-step__button-stop"
-        >
-          {{ labels.buttonStop }}
-        </button>
-      </div>
-    </slot>
+      <slot name="content">
+        <div class="v-step__content">
+          <div v-if="step.content" v-html="step.content"></div>
+          <div v-else>
+            This is a demo step! The id of this step is {{ hash }} and it
+            targets {{ step.target }}.
+          </div>
+        </div>
+      </slot>
 
+      <slot name="actions">
+        <div class="v-step__buttons">
+          <button
+            @click.prevent="skip"
+            v-if="!isLast && isButtonEnabled('buttonSkip')"
+            class="v-step__button v-step__button-skip"
+          >
+            {{ labels.buttonSkip }}
+          </button>
+          <button
+            @click.prevent="previousStep"
+            v-if="!isFirst && isButtonEnabled('buttonPrevious')"
+            class="v-step__button v-step__button-previous"
+          >
+            {{ labels.buttonPrevious }}
+          </button>
+          <button
+            @click.prevent="nextStep"
+            v-if="!isLast && isButtonEnabled('buttonNext')"
+            class="v-step__button v-step__button-next"
+          >
+            {{ labels.buttonNext }}
+          </button>
+          <button
+            @click.prevent="finish"
+            v-if="isLast && isButtonEnabled('buttonStop')"
+            class="v-step__button v-step__button-stop"
+          >
+            {{ labels.buttonStop }}
+          </button>
+        </div>
+      </slot>
+    </slot>
     <div
       class="v-step__arrow"
       :class="{ 'v-step__arrow--dark': step.header && step.header.title }"
@@ -57,13 +58,13 @@
 </template>
 
 <script>
-import Popper from 'popper.js'
-import jump from 'jump.js'
-import sum from 'hash-sum'
-import { DEFAULT_STEP_OPTIONS, HIGHLIGHT } from '../shared/constants'
+import Popper from "popper.js";
+import jump from "jump.js";
+import sum from "hash-sum";
+import { DEFAULT_STEP_OPTIONS, HIGHLIGHT } from "../shared/constants";
 
 export default {
-  name: 'v-step',
+  name: "v-step",
   props: {
     step: {
       type: Object
@@ -79,14 +80,14 @@ export default {
     },
     skip: {
       type: Function,
-      default: function () {
-        this.stop()
+      default: function() {
+        this.stop();
       }
     },
     finish: {
       type: Function,
-      default: function () {
-        this.stop()
+      default: function() {
+        this.stop();
       }
     },
     isFirst: {
@@ -111,65 +112,65 @@ export default {
       type: Boolean
     }
   },
-  data () {
+  data() {
     return {
       hash: sum(this.step.target),
       targetElement:
-        typeof this.step.target === 'string'
+        typeof this.step.target === "string"
           ? document.querySelector(this.step.target)
           : this.step.target
-    }
+    };
   },
   computed: {
-    params () {
+    params() {
       return {
         ...DEFAULT_STEP_OPTIONS,
         ...{ highlight: this.highlight }, // Use global tour highlight setting first
         ...{ enabledButtons: Object.assign({}, this.enabledButtons) },
         ...this.step.params // Then use local step parameters if defined
-      }
+      };
     }
   },
   methods: {
-    createStep () {
+    createStep() {
       if (this.debug) {
         console.log(
-          '[Vue Tour] The target element ' +
+          "[Vue Tour] The target element " +
             this.step.target +
             ' of .v-step[id="' +
             this.hash +
             '"] is:',
           this.targetElement
-        )
+        );
       }
 
       if (this.targetElement) {
-        this.enableScrolling()
-        this.createHighlight()
+        this.enableScrolling();
+        this.createHighlight();
 
         /* eslint-disable no-new */
         new Popper(
           this.targetElement,
-          this.$refs['v-step-' + this.hash],
+          this.$refs["v-step-" + this.hash],
           this.params
-        )
+        );
       } else {
         if (this.debug) {
           console.error(
-            '[Vue Tour] The target element ' +
+            "[Vue Tour] The target element " +
               this.step.target +
               ' of .v-step[id="' +
               this.hash +
               '"] does not exist!'
-          )
+          );
         }
-        this.$emit('targetNotFound', this.step)
+        this.$emit("targetNotFound", this.step);
         if (this.stopOnFail) {
-          this.stop()
+          this.stop();
         }
       }
     },
-    enableScrolling () {
+    enableScrolling() {
       if (this.params.enableScrolling) {
         if (this.step.duration || this.step.offset) {
           let jumpOptions = {
@@ -177,78 +178,78 @@ export default {
             offset: this.step.offset || 0,
             callback: undefined,
             a11y: false
-          }
+          };
 
-          jump(this.targetElement, jumpOptions)
+          jump(this.targetElement, jumpOptions);
         } else {
           // Use the native scroll by default if no scroll options has been defined
-          this.targetElement.scrollIntoView({ behavior: 'smooth' })
+          this.targetElement.scrollIntoView({ behavior: "smooth" });
         }
       }
     },
-    isHighlightEnabled () {
+    isHighlightEnabled() {
       if (this.debug) {
         console.log(
           `[Vue Tour] Highlight is ${
-            this.params.highlight ? 'enabled' : 'disabled'
+            this.params.highlight ? "enabled" : "disabled"
           } for .v-step[id="${this.hash}"]`
-        )
+        );
       }
-      return this.params.highlight
+      return this.params.highlight;
     },
-    createHighlight () {
+    createHighlight() {
       if (this.isHighlightEnabled()) {
-        document.body.classList.add(HIGHLIGHT.CLASSES.ACTIVE)
+        document.body.classList.add(HIGHLIGHT.CLASSES.ACTIVE);
         const transitionValue = window
           .getComputedStyle(this.targetElement)
-          .getPropertyValue('transition')
+          .getPropertyValue("transition");
 
         // Make sure our background doesn't flick on transitions
-        if (transitionValue !== 'all 0s ease 0s') {
-          this.targetElement.style.transition = `${transitionValue}, ${HIGHLIGHT.TRANSITION}`
+        if (transitionValue !== "all 0s ease 0s") {
+          this.targetElement.style.transition = `${transitionValue}, ${HIGHLIGHT.TRANSITION}`;
         }
 
-        this.targetElement.classList.add(HIGHLIGHT.CLASSES.TARGET_HIGHLIGHTED)
+        this.targetElement.classList.add(HIGHLIGHT.CLASSES.TARGET_HIGHLIGHTED);
         // The element must have a position, if it doesn't have one, add a relative position class
         if (!this.targetElement.style.position) {
-          this.targetElement.classList.add(HIGHLIGHT.CLASSES.TARGET_RELATIVE)
+          this.targetElement.classList.add(HIGHLIGHT.CLASSES.TARGET_RELATIVE);
         }
       } else {
-        document.body.classList.remove(HIGHLIGHT.CLASSES.ACTIVE)
+        document.body.classList.remove(HIGHLIGHT.CLASSES.ACTIVE);
       }
     },
-    removeHighlight () {
+    removeHighlight() {
       if (this.isHighlightEnabled()) {
-        const target = this.targetElement
-        const currentTransition = this.targetElement.style.transition
+        const target = this.targetElement;
+        const currentTransition = this.targetElement.style.transition;
         this.targetElement.classList.remove(
           HIGHLIGHT.CLASSES.TARGET_HIGHLIGHTED
-        )
-        this.targetElement.classList.remove(HIGHLIGHT.CLASSES.TARGET_RELATIVE)
+        );
+        this.targetElement.classList.remove(HIGHLIGHT.CLASSES.TARGET_RELATIVE);
         // Remove our transition when step is finished.
         if (currentTransition.includes(HIGHLIGHT.TRANSITION)) {
           setTimeout(() => {
             target.style.transition = currentTransition.replace(
               `, ${HIGHLIGHT.TRANSITION}`,
-              ''
-            )
-          }, 0)
+              ""
+            );
+          }, 0);
         }
       }
     },
-    isButtonEnabled (name) {
+    isButtonEnabled(name) {
       return this.params.enabledButtons.hasOwnProperty(name)
         ? this.params.enabledButtons[name]
-        : true
+        : true;
     }
   },
-  mounted () {
-    this.createStep()
+  mounted() {
+    this.createStep();
   },
-  destroyed () {
-    this.removeHighlight()
+  destroyed() {
+    this.removeHighlight();
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
