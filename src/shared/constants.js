@@ -48,12 +48,19 @@ export const DEFAULT_STEP_OPTIONS = {
   highlight: DEFAULT_OPTIONS.highlight, // By default use the global tour setting
   enabledButtons: DEFAULT_OPTIONS.enabledButtons,
   modifiers: {
-    preventOverflow: { enabled: true },
+    preventOverflow: {
+      enabled: false,
+      boundariesElement: 'window',
+      escapeWithReference: true
+    },
+    hide: {
+      enabled: true
+    },
     arrow: {
       element: '.v-step__arrow'
     }
   },
-  placement: 'bottom'
+  placement: 'auto'
 }
 
 export const KEYS = {

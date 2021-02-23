@@ -7325,13 +7325,18 @@ var DEFAULT_STEP_OPTIONS = {
   enabledButtons: DEFAULT_OPTIONS.enabledButtons,
   modifiers: {
     preventOverflow: {
+      enabled: false,
+      boundariesElement: 'window',
+      escapeWithReference: true
+    },
+    hide: {
       enabled: true
     },
     arrow: {
       element: '.v-step__arrow'
     }
   },
-  placement: 'bottom'
+  placement: 'auto'
 };
 var KEYS = {
   ARROW_RIGHT: 39,
