@@ -7324,6 +7324,9 @@ var DEFAULT_STEP_OPTIONS = {
   // By default use the global tour setting
   enabledButtons: DEFAULT_OPTIONS.enabledButtons,
   modifiers: {
+    preventOverflow: {
+      enabled: true
+    },
     arrow: {
       element: '.v-step__arrow'
     }

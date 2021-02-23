@@ -1,7 +1,7 @@
 export const DEFAULT_CALLBACKS = {
   onStart: () => {},
-  onPreviousStep: (currentStep) => {},
-  onNextStep: (currentStep) => {},
+  onPreviousStep: currentStep => {},
+  onNextStep: currentStep => {},
   onStop: () => {},
   onSkip: () => {},
   onFinish: () => {}
@@ -48,6 +48,7 @@ export const DEFAULT_STEP_OPTIONS = {
   highlight: DEFAULT_OPTIONS.highlight, // By default use the global tour setting
   enabledButtons: DEFAULT_OPTIONS.enabledButtons,
   modifiers: {
+    preventOverflow: { enabled: true },
     arrow: {
       element: '.v-step__arrow'
     }
