@@ -7330,7 +7330,7 @@ var DEFAULT_STEP_OPTIONS = {
       escapeWithReference: true
     },
     hide: {
-      enabled: true
+      enabled: false
     },
     arrow: {
       element: '.v-step__arrow'
