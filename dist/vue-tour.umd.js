@@ -7294,7 +7294,7 @@ var DEFAULT_CALLBACKS = {
   onFinish: function onFinish() {}
 };
 var DEFAULT_OPTIONS = {
-  highlight: false,
+  highlight: true,
   labels: {
     buttonSkip: 'Skip tour',
     buttonPrevious: 'Previous',
